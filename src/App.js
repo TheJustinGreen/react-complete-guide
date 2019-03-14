@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import classes from './App.css';
+import classes from './App.module.css';
 import Person from './Person/Person';
-
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 class App extends Component {
 
 
@@ -56,18 +56,10 @@ class App extends Component {
   render() {
     console.log(this.state);
 
-    const style = {
 
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-      
-    };
 
     let persons = null;
+    let btnClass = '';
 
     if(this.state.showPersons) {
 
@@ -75,13 +67,14 @@ class App extends Component {
         <div >
           {
             this.state.persons.map((person, index) => {
-              return <Person  
+              return <ErrorBoundary key = {person.id}>
+                <Person  
                     click = {() => this.deletePersonHandler(index)}
                     name = {person.name}
-                    age = {person.age} 
-                    key = {person.id} 
+                    age = {person.age}  
                     changed = {(event) => this.nameChangeHandler(event, person.id)}
                     />
+                    </ErrorBoundary>
             })
 
           }
@@ -89,8 +82,8 @@ class App extends Component {
         </div> 
    
       );
-
-      style.backgroundColor = 'red';
+      
+      btnClass = classes.Red;
     }
 
     const asignedClasses = [];
@@ -112,8 +105,7 @@ class App extends Component {
          <p className={asignedClasses.join(' ')}>This is really working!</p>
          
          <button 
-            style={style}
-
+            className={btnClass}
             onClick={this.togglePersonHandler}>Switch Name</button>
          {persons}
 
